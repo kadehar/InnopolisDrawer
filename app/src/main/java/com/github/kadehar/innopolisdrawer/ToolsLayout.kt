@@ -2,11 +2,12 @@ package com.github.kadehar.innopolisdrawer
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.kadehar.innopolisdrawer.databinding.ToolsViewBinding
+import com.github.kadehar.innopolisdrawer.base.setAdapterAndCleanupOnDetachFromWindow
+import com.github.kadehar.innopolisdrawer.base.setData
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class ToolsLayout @JvmOverloads constructor(
     context: Context,
@@ -14,21 +15,29 @@ class ToolsLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
-    private val binding: ToolsViewBinding =
-        ToolsViewBinding.inflate(
-            LayoutInflater.from(context),
-            this, true
-        )
+    private var onClick: (Int) -> Unit = {}
+
+    private val adapterDelegate = ListDelegationAdapter(colorAdapterDelegate {
+        onClick(it)
+    })
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        binding.toolsList.apply {
+        findViewById<RecyclerView>(R.id.toolsList).apply {
             layoutManager = LinearLayoutManager(
                 context,
                 RecyclerView.HORIZONTAL,
                 false
             )
+            setAdapterAndCleanupOnDetachFromWindow(adapterDelegate)
         }
     }
 
+    fun render(toolsItems: List<ToolsItem>) {
+        adapterDelegate.setData(toolsItems)
+    }
+
+    fun setOnClickListener(onClick: (Int) -> Unit) {
+        this.onClick = onClick
+    }
 }

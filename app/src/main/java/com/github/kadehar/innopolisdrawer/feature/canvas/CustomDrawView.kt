@@ -50,11 +50,11 @@ class CustomDrawView @JvmOverloads constructor(
         strokeWidth = STROKE_WIDTH // default: Hairline-width (really thin)
     }
 
-    /*fun render(state: CanvasViewState) {
+    fun render(state: CanvasViewState) {
         drawColor = ResourcesCompat.getColor(resources, state.color.value, null)
         paint.color = drawColor
-        paint.strokeWidth = state.size.value.toFloat()
-        *//*if (state.tools == TOOLS.DASH) {
+        /*paint.strokeWidth = state.size.value.toFloat()
+        if (state.tools == TOOLS.DASH) {
             paint.pathEffect = DashPathEffect(
                 floatArrayOf(
                     state.size.value.toFloat() * 2,
@@ -65,9 +65,8 @@ class CustomDrawView @JvmOverloads constructor(
             )
         } else {
             paint.pathEffect = null
-        }*//*
+        }*/
     }
-*/
     fun clear() {
         extraCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         invalidate()
